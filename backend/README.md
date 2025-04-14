@@ -19,7 +19,7 @@ The request body must be in JSON format and include the following fields:
     "lastname": "Smith"
   },
   "email": "alice@example.com",
-  "password": "mypassword123"
+    "password": "mypassword123"
 }
 ```
 
@@ -98,9 +98,12 @@ The request body must be in JSON format and include the following fields:
   ]
 }
 ```
-Example Response
-Request:
 
+### Example Response
+
+#### Request:
+
+```json
 {
   "fullname": {
     "firstname": "Alice",
@@ -109,7 +112,11 @@ Request:
   "email": "alice@example.com",
   "password": "mypassword123"
 }
-Response:
+```
+
+#### Response:
+
+```json
 {
   "token": "jwt_token_here",
   "user": {
@@ -120,4 +127,178 @@ Response:
     },
     "email": "alice@example.com"
   }
+}
+```
+
+## Endpoint: `/api/users/login`
+
+### HTTP Method: `POST`
+
+### Description
+
+This endpoint allows existing users to log in by providing their email and password. Upon successful login, the API returns a JWT token and user details.
+
+### Request Body
+
+The request body must be in JSON format and include the following fields:
+
+```json
+{
+  "email": "johndoe@example.com",
+  "password": "securepassword"
+}
+```
+
+### Responses
+
+#### Success Response
+
+**Status Code:** `200 OK`
+
+**Response Body:**
+
+```json
+{
+  "token": "jwt_token_here",
+  "user": {
+    "_id": "user_id_here",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "johndoe@example.com"
+  }
+}
+```
+
+#### Error Responses
+
+##### Invalid Credentials
+
+**Status Code:** `401 Unauthorized`
+
+**Response Body:**
+
+```json
+{
+  "message": "Invalid email or password"
+}
+```
+
+##### Missing Fields
+
+**Status Code:** `403 Forbidden`
+
+**Response Body:**
+
+```json
+{
+  "message": "Please fill all the fields"
+}
+```
+
+##### User Not Found
+
+**Status Code:** `403 Forbidden`
+
+**Response Body:**
+
+```json
+{
+  "message": "User not found"
+}
+```
+
+##### Validation Errors
+
+**Status Code:** `400 Bad Request`
+
+**Response Body:**
+
+```json
+{
+  "errors": [
+    {
+      "msg": "Please enter a valid email",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Password must be at least 6 characters long",
+      "param": "password",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### Example Response
+
+#### Request:
+
+```json
+{
+  "email": "johndoe@example.com",
+  "password": "securepassword"
+}
+```
+
+#### Response:
+
+```json
+{
+  "token": "jwt_token_here",
+  "user": {
+    "_id": "user_id_here",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "johndoe@example.com"
+  }
+}
+```
+
+#### Error Responses
+
+##### Missing Fields
+
+**Status Code:** `403 Forbidden`
+
+**Response Body:**
+
+```json
+{
+  "message": "Please fill all the fields"
+}
+```
+
+##### User Not Found
+
+**Status Code:** `403 Forbidden`
+
+**Response Body:**
+
+```json
+{
+  "message": "User not found"
+}
+```
+Validation Errors
+
+Status Code: 400 Bad Request
+Response Body:
+{
+  "errors": [
+    {
+      "msg": "Please enter a valid email",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Password must be at least 6 characters long",
+      "param": "password",
+      "location": "body"
+    }
+  ]
 }
