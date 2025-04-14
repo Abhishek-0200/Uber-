@@ -1,8 +1,11 @@
-const app = require('./app');
+import app from './app.js';
+import dotenv from 'dotenv';
+import http from 'http';
 
-const http = require('http');
+dotenv.config();
 const server = http.createServer(app);
 
-server.listen(3000, () => {
-  console.log('Server is running on port 3000');
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+  console.log(`Server is running on ${port}`);
 });
