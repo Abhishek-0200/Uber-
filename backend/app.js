@@ -4,8 +4,9 @@ import connectDB from './db/db.js';
 import cors from 'cors';
 import userRoutes from './routes/user.route.js';
 import cookieParser from 'cookie-parser';
+import captainRoutes from './routes/captain.route.js';
 
-
+connectDB(); // Connect to MongoDB
 
 dotenv.config();  
 
@@ -17,11 +18,8 @@ app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 
-app.use('/api/users', userRoutes); // Use user routes
-connectDB(); // Connect to MongoDB
+app.use('/api/users', userRoutes);// Use user routes
+app.use('/api/captain', captainRoutes)
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-}); 
 
 export default app;
