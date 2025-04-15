@@ -3,6 +3,8 @@ import User from '../models/user.model.js';
 import { createUser } from '../Services/user.service.js';
 import userModel from '../models/user.model.js';
 import bcrypt from 'bcrypt';
+import  blacklistTokenModel  from '../models/blacklistToken.model.js';
+
 
 export const registerController = async (req, res, next) => {
   
@@ -54,6 +56,8 @@ export const loginController = async (req, res) => {
       return res.status(403).json({ message: "Invalid credentials" }); 
     }
     const token = user.generateAuthToken();
+    res.cookie("token" , token);
+   
     res.status(200).json({token , user});
 
     
@@ -62,3 +66,21 @@ export const loginController = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 }
+
+export const getProfileController = async (req, res) => {
+res.status(200).json({user : req.user});
+}
+
+
+export const logoutController = async (req, res) => {
+  try {
+    res.clearCookie("token");
+    await blacklistTokenModel.create({ token: req.cookies.token });
+    res.status(200).json({ message: "Logout successfully" });
+
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
