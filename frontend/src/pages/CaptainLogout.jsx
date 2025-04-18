@@ -11,7 +11,7 @@ const CaptainLogout = () => {
 
     useEffect(() => {
         if(token) {
-            axios.get(`${import.meta.env.VITE_BASE_URL}captains/logout`, {
+            axios.get(`${import.meta.env.VITE_BASE_URL}captain/logout`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

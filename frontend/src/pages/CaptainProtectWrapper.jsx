@@ -24,7 +24,7 @@ const CaptainProtectWrapper = ( {children}) => {
                 if(res.status === 200) {
                     setLoading(false);
                     setCaptain(res.data.captain);
-                    navigate('/home');
+                    navigate('/captain/home');
                 }
             }).catch( (error) => {
                 console.log(error.message);
@@ -32,7 +32,7 @@ const CaptainProtectWrapper = ( {children}) => {
                 navigate('/captain/login');
             })
         }
-    })
+    },[])
 
 
 

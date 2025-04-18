@@ -38,6 +38,7 @@ export const createCaptainController = async (req ,res) => {
         }
         // console.log(captain);
         const token = captain.generateAuthToken();
+        res.cookie("token", token);
         res.status(201).json({token , captain});
     } catch (error) {
         console.log(error.message)
@@ -71,7 +72,7 @@ export const loginCaptainController = async (req, res) => {
     const isMathed = await captain.comparePassword(password);
     console.log(isMathed) // Compare the password with the hashed password
     if(!isMathed) {
-      return res.status(403).json({ message: "Invalid credentials" }); 
+      return res.status(400).json({ message: "Invalid credentials" }); 
     }
     const token = captain.generateAuthToken();
     res.cookie("token" , token);
@@ -93,7 +94,8 @@ res.status(200).json({captain : req.captain});
 export const logoutCaptainController = async (req, res) => {
   try {
     res.clearCookie("token");
-    await blacklistTokenModel.create({ token: req.cookies.token });
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+    await blacklistTokenModel.create({ token: token });
     res.status(200).json({ message: "Logout successfully" });
 
   } catch (error) {
