@@ -13,24 +13,28 @@ const UserLogin = () => {
   const navigate = useNavigate();
   
   const submitHandler = async (e) => {  
-     e.preventDefault();
+    e.preventDefault();
     const data = {
       email,
       password
+    };
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}users/login`, data);
+      if (res.status === 200) {
+        alert("User logged in successfully!");
+        setUser(res.data.user);
+        console.log("User data:", res.data.user);
+        console.log("Token received:", res.data.token);
+        localStorage.setItem("token", res.data.token);
+        navigate('/home');
+      }
+    } catch (error) {
+      console.log("Error during login:", error.message);
     }
 
-    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}users/login`, data);
-    if(res.status === 200) {
-      alert("User logged in successfully!");
-      setUser(res.data.user);
-      console.log(res)
-      console.log("token here : " , res.data.token)
-      localStorage.setItem("token", res.data.token);
-      navigate('/home');
-    }
     setEmail("");
     setPassword("");
-
   }
 
 

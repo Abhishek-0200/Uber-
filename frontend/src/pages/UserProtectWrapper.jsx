@@ -11,7 +11,9 @@ const UserProtectWrapper = ({ children }) => {
     const token = localStorage.getItem("token");
     
     useEffect(() => {
+        console.log("user protect wrapper entered " ,token)
         if(!token) {
+            
             navigate('/user/login');
         } else {
             axios.get(`${import.meta.env.VITE_BASE_URL}users/profile`, {
